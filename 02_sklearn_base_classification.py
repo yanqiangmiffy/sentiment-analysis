@@ -23,16 +23,18 @@ stop_words = open('data/stop_words.txt','r',encoding='utf-8').read().split('\n')
 def word_seg(content):
     return [word for word in jieba.cut(content) if word not in stop_words]
 
+
+names=["LinearSVC","SGDClassifier","RandomForestClassifier","DecisionTreeClassifier"]
 classifiers=[
-                MultinomialNB(),
-                KNeighborsClassifier(),
+                # MultinomialNB(),
+                # KNeighborsClassifier(),
                 # MLPClassifier(),
-                SVC(),
+                # SVC(),
                 LinearSVC(),
                 # LinearSVR(),不能用
                 SGDClassifier(),
-                LogisticRegression(),
-                RandomForestClassifier(),
+                # LogisticRegression(),
+                RandomForestClassifier(oob_score=True),
                 # GradientBoostingClassifier(),
                 # AdaBoostClassifier(),
                 DecisionTreeClassifier()]
@@ -49,9 +51,9 @@ X_train_feature = vec.fit_transform(train_data['word_seg'])
 X_test_feature = vec.transform(test_data['word_seg'])
 
 
-for clf in classifiers:
+for clf,name in zip(classifiers,names):
     print("***********"*15)
-    print(str(clf))
+    print(name)
 
     # --------------情感值预测开始------------------------
     y_train_sent=train_data['sentiment_value'].astype(int)
@@ -61,7 +63,6 @@ for clf in classifiers:
     # clf =svm.LinearSVC()
     sent_clf=clf
     sent_clf.fit(X_train_sent, y_train_sent)
-
 
     # 在训练集评估模型
     pred_test_sent=sent_clf.predict(X_test_sent)

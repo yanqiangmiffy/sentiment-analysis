@@ -4,7 +4,7 @@ from sklearn import svm
 from sklearn.linear_model.stochastic_gradient import SGDClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score,f1_score,precision_score,recall_score
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split,GridSearchCV
 import jieba
 import pandas as pd
 import numpy as np
@@ -14,9 +14,19 @@ stop_words = open('data/stop_words.txt','r',encoding='utf-8').read().split('\n')
 def word_seg(content):
     return [word for word in jieba.cut(content) if word not in stop_words]
 
+def tune_params(X,y):
+    # param_test2 = {'alpha': [0.0001, 0.00001, 0.00002]}  # 10
+    param_test3 = {'n_iter': range(10, 100, 10)}  # 10
+    gsearch1 = GridSearchCV(estimator=SGDClassifier(random_state=10, n_iter=50),
+                            param_grid=param_test3, scoring='accuracy', cv=5)
+    gsearch1.fit(X, y)
+    print(gsearch1.cv_results_, gsearch1.best_params_, gsearch1.best_score_)
+
 
 # 内容分词
 train_data=pd.read_csv('data/train.csv')
+# 去除重复的ID
+train_data=train_data.drop_duplicates(subset=['content_id'],keep='first')
 train_data['word_seg']=train_data['content'].apply(lambda x:" ".join(word_seg(x)))
 test_data=pd.read_csv('data/test_public.csv')
 test_data['word_seg']=test_data['content'].apply(lambda x:" ".join(word_seg(x)))
@@ -32,10 +42,10 @@ y_train_sent=train_data['sentiment_value'].astype(int)
 X_train_sent,X_test_sent,y_train_sent,y_test_sent=\
     train_test_split(X_train_feature,y_train_sent,test_size=0.1,random_state=42)
 # clf = LogisticRegression(C=4, dual=True)
-# clf =svm.LinearSVC()
+clf =svm.LinearSVC()
 # clf =RandomForestClassifier()
-clf =SGDClassifier()
-
+clf =SGDClassifier(n_iter=80)
+# tune_params(X_train_sent,y_train_sent)
 clf.fit(X_train_sent, y_train_sent)
 
 
@@ -61,7 +71,6 @@ preds=clf.predict(X_test_feature)
 # --------------情感值预测结束------------------------
 
 
-
 # -----------------主题预测开始----------------------
 subject_labels=dict()
 labels_subject=dict()
@@ -75,7 +84,8 @@ X_train_sub,X_test_sub,y_train_sub,y_test_sub=\
     train_test_split(X_train_feature,y_train_sub,test_size=0.1,random_state=42)
 # sub_clf = LogisticRegression(C=10.0, solver='newton-cg', multi_class='multinomial')
 # clf =svm.LinearSVC()
-clf =SGDClassifier()
+# tune_params(X_train_sub,y_train_sub)
+clf =SGDClassifier(n_iter=20)
 clf.fit(X_train_sub, y_train_sub)
 
 # 在训练集评估模型
