@@ -42,7 +42,7 @@ y_train_sent=train_data['sentiment_value'].astype(int)
 X_train_sent,X_test_sent,y_train_sent,y_test_sent=\
     train_test_split(X_train_feature,y_train_sent,test_size=0.1,random_state=42)
 # clf = LogisticRegression(C=4, dual=True)
-clf =svm.LinearSVC()
+# clf =svm.LinearSVC()
 # clf =RandomForestClassifier()
 clf =SGDClassifier(n_iter=80)
 # tune_params(X_train_sent,y_train_sent)
