@@ -1,3 +1,13 @@
+# !/usr/bin/env python
+# -*- coding:utf-8 _*-
+"""
+@Author:yanqiang
+@File: utils.py
+@Time: 2018/9/26 14:31
+@Software: PyCharm
+@Description: 使用svm+word2vec进行情感分析
+"""
+
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report,accuracy_score,f1_score,precision_score,recall_score
 from sklearn.svm import LinearSVC

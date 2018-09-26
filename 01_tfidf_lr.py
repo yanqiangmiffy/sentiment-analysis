@@ -61,7 +61,7 @@ print("precision:{:.4f}-recall:{:.4f}-f1:{:.4f}-accuracy:{:.4f}".format(precisio
 
 
 # 加载测试集以及预测
-preds=clf.predict(X_test_feature)
+sent_preds=clf.predict(X_test_feature)
 # 两种效果写法，和上面一样
 # preds=clf.predict_proba(X_test)
 # preds=np.argmax(preds,axis=1)
@@ -107,7 +107,7 @@ sub_preds=[labels_subject[i] for i in sub_preds]
 
 # -------------------提交结果开始-----------------------
 test_data['subject']=sub_preds
-test_data['sentiment_value']=preds
+test_data['sentiment_value']=sent_preds
 test_data['sentiment_word']=None
 test_data[['content_id','subject','sentiment_value','sentiment_word']].to_csv('result/01_tfidf_lr.csv',index=False)
 # -------------------提交结果结束-----------------------
