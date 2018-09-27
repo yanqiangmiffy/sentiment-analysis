@@ -4,4 +4,7 @@ import pandas as pd
 import jieba
 train_data=pd.read_csv('data/train.csv')
 # print(train_data['sentiment_word'].isnull().value_counts())
-print(train_data['sentiment_word'].dropna().shape)
+sentiment_words=train_data['sentiment_word'].dropna()
+with open('data/userdict.txt','w',encoding='utf-8') as out_data:
+    for word in sentiment_words:
+        out_data.write(word+'\n')

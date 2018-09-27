@@ -8,6 +8,7 @@ from sklearn.model_selection import train_test_split,GridSearchCV
 import jieba
 import pandas as pd
 import numpy as np
+# jieba.load_userdict('data/userdict.txt')
 stop_words = open('data/stop_words.txt','r',encoding='utf-8').read().split('\n')
 
 
@@ -64,6 +65,8 @@ print("precision:{:.4f}-recall:{:.4f}-f1:{:.4f}-accuracy:{:.4f}".format(precisio
 
 # 加载测试集以及预测
 sent_preds=clf.predict(X_test_feature)
+sent_preds=0
+print(sent_preds)
 # 两种效果写法，和上面一样
 # preds=clf.predict_proba(X_test)
 # preds=np.argmax(preds,axis=1)
