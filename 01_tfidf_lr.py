@@ -14,6 +14,7 @@ stop_words = open('data/stop_words.txt','r',encoding='utf-8').read().split('\n')
 def word_seg(content):
     return [word for word in jieba.cut(content) if word not in stop_words and word!=' ']
 
+
 def tune_params(X,y):
     # param_test2 = {'alpha': [0.0001, 0.00001, 0.00002]}  # 10
     param_test3 = {'n_iter': range(10, 100, 10)}  # 10
@@ -28,6 +29,7 @@ train_data=pd.read_csv('data/train.csv')
 # 去除重复的ID
 train_data=train_data.drop_duplicates(subset=['content_id'],keep='first') # 去除重复id的数据
 train_data['word_seg']=train_data['content'].apply(lambda x:" ".join(word_seg(x)))
+
 test_data=pd.read_csv('data/test_public.csv')
 test_data['word_seg']=test_data['content'].apply(lambda x:" ".join(word_seg(x)))
 # 提取tfidf特征
