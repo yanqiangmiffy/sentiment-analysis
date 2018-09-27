@@ -1,14 +1,15 @@
-# !/usr/bin/env python  
-# -*- coding:utf-8 _*-  
-""" 
-@Author:yanqiang 
-@File: utils.py 
+# !/usr/bin/env python
+# -*- coding:utf-8 _*-
+"""
+@Author:yanqiang
+@File: utils.py
 @Time: 2018/9/26 14:31
-@Software: PyCharm 
+@Software: PyCharm
 @Description: 加载数据
 """
 import jieba
 import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 stop_words = open('data/stop_words.txt', 'r', encoding='utf-8').read().split('\n')
 
@@ -31,3 +32,20 @@ def load_data():
     submit_data['word_seg']=submit_data['content'].apply(lambda x:" ".join(word_seg(x)))
     # 提取tfidf特征
     return train_data,submit_data
+
+def generate_data():
+    train_data, submit_data = load_data()
+    vec = TfidfVectorizer(ngram_range=(1, 3), min_df=1, max_df=0.9, use_idf=True, smooth_idf=True, sublinear_tf=True)
+    X = vec.fit_transform(train_data['word_seg'])
+    X_submit = vec.transform(submit_data['word_seg'])
+
+    subject_labels = dict()
+    labels_subject = dict()
+    for i, x in enumerate(pd.unique(train_data['subject'])):
+        subject_labels[x] = i
+        labels_subject[i] = x
+    train_data['subject'] = train_data['subject'].apply(lambda x: subject_labels[x])
+    y_sub = train_data['subject'].astype(int)
+    y_sent = train_data['sentiment_value'].astype(int)
+
+    return X,y_sub,y_sent,X_submit,labels_subject

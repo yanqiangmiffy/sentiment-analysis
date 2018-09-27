@@ -116,3 +116,5 @@ test_data['sentiment_value']=sent_preds
 test_data['sentiment_word']=None
 test_data[['content_id','subject','sentiment_value','sentiment_word']].to_csv('result/01_tfidf_lr.csv',index=False)
 # -------------------提交结果结束-----------------------
+
+print(test_data[['content_id','subject','sentiment_value','sentiment_word']].info())
