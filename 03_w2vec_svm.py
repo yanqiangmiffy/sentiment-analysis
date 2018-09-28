@@ -42,6 +42,7 @@ def build_sentence_vector(text,size,w2v):
         vec /= count
     return vec
 
+
 def load_data(n_dim=50):
     corpus = pd.concat([data['word_seg'], submit_data['word_seg']], axis=0)
     corpus = [sent.split(' ') for sent in corpus.tolist()]

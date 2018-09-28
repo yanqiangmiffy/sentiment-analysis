@@ -18,12 +18,12 @@ precision:0.6316-recall:0.6291-f1:0.6291-accuracy:0.6291
 
 - 情感
 ```text
-precision:0.6836-recall:0.7126-f1:0.6609-accuracy:0.7126
+precision:0.7031-recall:0.6876-f1:0.5928-accuracy:0.6876
 ```
 
 - 主题
 ```text
-precision:0.6353-recall:0.6332-f1:0.6324-accuracy:0.6332 
+precision:0.8544-recall:0.8516-f1:0.8508-accuracy:0.8516
 ```
 
 

@@ -65,8 +65,6 @@ print("precision:{:.4f}-recall:{:.4f}-f1:{:.4f}-accuracy:{:.4f}".format(precisio
 
 # 加载测试集以及预测
 sent_preds=clf.predict(X_test_feature)
-sent_preds=0
-print(sent_preds)
 # 两种效果写法，和上面一样
 # preds=clf.predict_proba(X_test)
 # preds=np.argmax(preds,axis=1)
@@ -80,6 +78,7 @@ labels_subject=dict()
 for i,x in enumerate(pd.unique(train_data['subject'])):
     subject_labels[x]=i
     labels_subject[i]=x
+print(labels_subject)
 train_data['subject']=train_data['subject'].apply(lambda x:subject_labels[x])
 
 y_train_sub=train_data['subject'].astype(int)
@@ -117,4 +116,3 @@ test_data['sentiment_word']=None
 test_data[['content_id','subject','sentiment_value','sentiment_word']].to_csv('result/01_tfidf_lr.csv',index=False)
 # -------------------提交结果结束-----------------------
 
-print(test_data[['content_id','subject','sentiment_value','sentiment_word']].info())
