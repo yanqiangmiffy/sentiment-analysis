@@ -36,20 +36,21 @@ def get_car_commnet():
     pos_content = []
     neg_content = []
 
-    for url in dianping_urls:
-        print(url)
-        try:
-            res=requests.get(url,headers=headers)
-            html=etree.HTML(res.text)
-            koubei_tabcons=html.xpath('//div[@class="koubei-tabcon "]')[:4]
-            pos_koubei,neg_koubei=koubei_tabcons[2],koubei_tabcons[3]
-            pos_comm=[comm.strip() for comm in pos_koubei.xpath('//ul/li/div[@class="comm-content"]/p[@class="short-comm"]/text()')]
-            print(pos_comm)
-            neg_comm=[comm.strip() for comm in neg_koubei.xpath('//ul/li/div[@class="comm-content"]/p[@class="short-comm"]/text()')]
-            pos_content.extend(pos_comm)
-            neg_content.extend(neg_comm)
-        except Exception as e:
-            break
+    url='http://db.auto.sohu.com/haval-2128/2834/dianping.html'
+    res = requests.get(url, headers=headers)
+    html = etree.HTML(res.text)
+    print(res.text)
+    koubei_tabcons = html.xpath('//div[@class="koubei-tabcon "]')[1:3]
+    print(len(koubei_tabcons))
+    pos_koubei, neg_koubei = koubei_tabcons[0], koubei_tabcons[1]
+    pos_comm = [comm.strip() for comm in
+                pos_koubei.xpath('//ul/li/div[@class="comm-content"]/p[@class="short-comm"]/text()')]
+    neg_comm = [comm.strip() for comm in
+                neg_koubei.xpath('//ul/li/div[@class="comm-content"]/p[@class="short-comm"]/text()')]
+    pos_content.extend(pos_comm)
+    neg_content.extend(neg_comm)
+
+
     for _ in pos_content:
         sentiment_value.append(1)
     for _ in neg_content:
