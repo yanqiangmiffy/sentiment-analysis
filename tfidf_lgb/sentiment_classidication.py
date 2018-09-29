@@ -11,12 +11,11 @@
 import numpy as np
 import pandas as pd
 import lightgbm as lgb
-from utils import generate_data
+from utils import generate_data,word_seg
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score,f1_score,precision_score,recall_score
 
-X,y_sub,y_sent,X_submit,labels_subject=generate_data()
-
+X,y_sub,y_sent,X_submit,labels_subject=generate_data(use_sina=True)
 # 类别标签转换一下
 sent_labels={-1:0,0:1,1:2}
 labels_sent={0:-1,1:0,2:1}
@@ -35,12 +34,7 @@ def train():
         'boosting_type': 'gbdt',
         'objective': 'multiclass',
         'metric': {'multi_logloss'},
-        # 'is_unbalance': True,
-        # 'num_class': 10,
-        # 'num_leaves': 31,
-        # 'min_data_in_leaf': 1,
-        # 'learning_rate': 0.1,
-        # 'verbose':1
+        'is_unbalance': True,
         'num_class': 3,
         'learning_rate': 0.1,
         'num_leaves': 23,
